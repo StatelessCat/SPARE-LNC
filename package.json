@@ -1,0 +1,25 @@
+{
+  "name": "spare-lnc",
+  "version": "0.1.0",
+  "description": "SPARql REquest en Langage Naturel Contrôlé",
+  "main": " ",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StatelessCat/SPARE-LNC.git"
+  },
+  "author": "Bryan KONG WIN CHANG",
+  "bugs": {
+    "url": "https://github.com/StatelessCat/SPARE-LNC/issues"
+  },
+  "homepage": "https://github.com/StatelessCat/SPARE-LNC#readme",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-connect": "^2.2.0",
+    "gulp-peg": "^0.1.2",
+    "gulp-util": "^3.0.6",
+    "pegjs": "^0.8.0"
+  }
+}

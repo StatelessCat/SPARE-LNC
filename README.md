@@ -1,6 +1,22 @@
 # SPARE-LNC
 SPARql REquest en Langage Naturel Contrôlé
 
+=====================================
+= CONSTRUCTION/EXPOSITION DU PARSER =
+=====================================
+```
+npm install -d
+```
+
+Generation du parseur dans un module utilisant l'espace de nom 'sparelnc':
+```
+node_modules/pegjs/bin/pegjs -e sparelnc dev/PARSER\ EN\ COURS.js dist/sparelnc.js
+```
+
+========================================
+= UTILISATION DU PARSER DANS UN PROJET =
+========================================
+
 =========================
 =	CONTENU DU GITHUB	=
 =========================
