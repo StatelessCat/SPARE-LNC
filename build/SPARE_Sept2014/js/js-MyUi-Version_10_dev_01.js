@@ -1,3 +1,5 @@
+console.log("----------------------------------------------------------------");
+
  /* Variable de sauvegarde et chargement.*/
  var sauvegarde = "";
  
@@ -60,7 +62,7 @@ function my_load( query )
 	// On crée une liste par element, et on la remplie avec les élément
 	for( i=0; i<results.length; i++ )
 	{
-	    newlist(results[i][0], je_cherche_a_next);
+	    newlist($el, results[i][0], je_cherche_a_next);
 		for( j=1; j<results[i].length; j++)
 		{
 		  focus_add( results[i][j], "control_world");
@@ -355,23 +357,23 @@ une classe différente. On doit aussi pseudo parser pour les disponibilité d'é
 	 <li id="id_number'+ id +'" class="mots" > #'+ id + '</li>\
 	 <li id="element' + id + '" class="mots" >Je cherche à </li> ');
 */
- function newlist( debut, next_list) 
+ function newlist($el, debut, next_list) 
  {
 	id++;
 	querid++;
 	//$(".testliste").append('<ul id="query' + querid +'" class="otherinnerlist"> 
-	$(conteneur).append(' <div id="content_query'+ querid +'"><ul id="query' + querid +'" class="otherinnerlist"> \
+	$el.find(conteneur).append(' <div id="content_query'+ querid +'"><ul id="query' + querid +'" class="otherinnerlist"> \
 	 <li id="element' + id + '" class="mots" >' + debut + '</li> </ul></div>');
 	 
-	 $(conteneur).animate({ scrollTop: $(".testliste")[0].scrollHeight }, "fast");
+	 $el.find(conteneur).animate({ scrollTop: $el.find(".testliste")[0].scrollHeight }, "fast");
 
 	 var chaine = "#query" + querid;
 	// alert(chaine);
-	$(chaine).sortable();
-	$(chaine).click( function(){ changeFocusElement( chaine ); });
+	$el.find(chaine).sortable();
+	$el.find(chaine).click( function(){ changeFocusElement( chaine ); });
 	
 	/* Pour le moment, désactivé. Tant qu'on ne fait pas de groupage dessus. */
-	$(chaine).sortable( 'disable' )
+	$el.find(chaine).sortable( 'disable' )
 	
 	changeFocusElement( chaine );
 	
@@ -691,8 +693,10 @@ function synchroCLN( text ) { document.getElementById("resultSPARQLIntermediaire
 	// A besoin de la fonction de JQuery/Jcascript
 	
   // Initialisation de l'ensemble
-	$(function() {
-	
+var sparelnc = {};
+sparelnc.init = function (container) {
+  var $el = $(container);
+  console.log('---------------------------init----------------------------');
 	  /*
 		A chaque ajout de liste, on doit ajouter une nouvelle liste dans querylist.
 		Le premier élément est le nom de l'élément pour le retrouver dans la liste avec une comparaison 
@@ -700,8 +704,10 @@ function synchroCLN( text ) { document.getElementById("resultSPARQLIntermediaire
 	  querylist.push( new Array("#query") );
 	
 	/* Bouton pour voir le contenu brutal de la trace... Affiché en JSON ? */
-	$( "#maj_elements_conseil").button();
-	$( "#maj_elements_conseil" ).bind("click", 
+	// $( "#maj_elements_conseil").button();
+  $el.find( "#maj_elements_conseil").button();
+  
+	$el.find( "#maj_elements_conseil" ).bind("click", 
 	function()
 	{
 		/* Avec ces requêtes, on récupère aussi d'autres éléments.*/
@@ -729,8 +735,8 @@ function synchroCLN( text ) { document.getElementById("resultSPARQLIntermediaire
 		
 	});
 	
-	$( "#maj_elements_conseil2").button();
-	$( "#maj_elements_conseil2" ).bind("click", 
+	$el.find( "#maj_elements_conseil2").button();
+	$el.find( "#maj_elements_conseil2" ).bind("click", 
 	function()
 	{
 		/* Avec ces requêtes, on récupère aussi d'autres éléments.*/
@@ -758,61 +764,61 @@ function synchroCLN( text ) { document.getElementById("resultSPARQLIntermediaire
 		
 	});
 	/* Bouton temporaire de création de la requête */
-	$( ".processquery" ).button( );
-	$( ".processquery" ).bind("click", function(){extract_query( focus ); });
-	$( ".processquery").button( "option", "disabled", false );
+	$el.find( ".processquery" ).button( );
+	$el.find( ".processquery" ).bind("click", function(){extract_query( focus ); });
+	$el.find( ".processquery").button( "option", "disabled", false );
 	
-	$( ".processquery_list" ).button( );
-	$( ".processquery_list" ).bind("click", function(){extract_all_query( ); });
-	$( ".processquery_list").button( "option", "disabled", false );
+	$el.find( ".processquery_list" ).button( );
+	$el.find( ".processquery_list" ).bind("click", function(){extract_all_query( ); });
+	$el.find( ".processquery_list").button( "option", "disabled", false );
 		
 	/* Boutons qui rajoutent des éléments à la requête sélectionnée.  */
-	$("#getWord").button();
-	$( "#getWord" ).bind("click", function(){ focus_add( " récupérer ", "control_world");  active_next_button( recuperer_next );    });
+	$el.find("#getWord").button();
+	$el.find( "#getWord" ).bind("click", function(){ focus_add( " récupérer ", "control_world");  active_next_button( recuperer_next );    });
 	
-	$("#countWord").button();
-	$( "#countWord" ).bind("click", function(){ focus_add( " compter le nombre d'", "control_world");   active_next_button( compter_next );    });
+	$el.find("#countWord").button();
+	$el.find( "#countWord" ).bind("click", function(){ focus_add( " compter le nombre d'", "control_world");   active_next_button( compter_next );    });
 	
-	$("#countWord_short").button();
-	$( "#countWord_short" ).bind("click", function(){ focus_add( " le nombre d'", "control_world");   active_next_button( compter_next );    });
+	$el.find("#countWord_short").button();
+	$el.find( "#countWord_short" ).bind("click", function(){ focus_add( " le nombre d'", "control_world");   active_next_button( compter_next );    });
 	
 	
-	$("#lesobselWord").button();
-	$( "#lesobselWord" ).bind("click", function(){ focus_add( " les obsels ", "control_world");   active_next_button( lesobselWord_next );    });
+	$el.find("#lesobselWord").button();
+	$el.find( "#lesobselWord" ).bind("click", function(){ focus_add( " les obsels ", "control_world");   active_next_button( lesobselWord_next );    });
 	
-	$("#unobselWord").button();
-	$( "#unobselWord" ).bind("click", function(){ focus_add( " un obsel ", "control_world");  active_next_button( unobselWord_next );  });
+	$el.find("#unobselWord").button();
+	$el.find( "#unobselWord" ).bind("click", function(){ focus_add( " un obsel ", "control_world");  active_next_button( unobselWord_next );  });
 	
-	$("#obselWord").button();
-	$( "#obselWord" ).bind("click", function(){ focus_add( "obsels ", "control_world");  active_next_button( obselWord_next );   });
+	$el.find("#obselWord").button();
+	$el.find( "#obselWord" ).bind("click", function(){ focus_add( "obsels ", "control_world");  active_next_button( obselWord_next );   });
 	
-	$("#attributesWord").button();
-	$( "#attributesWord" ).bind("click", function(){ focus_add( "les attributs ", "control_world");    });
+	$el.find("#attributesWord").button();
+	$el.find( "#attributesWord" ).bind("click", function(){ focus_add( "les attributs ", "control_world");    });
 	
-	$("#attributeWord").button();
-	$( "#attributeWord" ).bind("click", function(){ focus_add( "l'attribut ", "control_world");    });
+	$el.find("#attributeWord").button();
+	$el.find( "#attributeWord" ).bind("click", function(){ focus_add( "l'attribut ", "control_world");    });
 	
-	$("#possessAttributeCondWord").button();
-	$( "#possessAttributeCondWord" ).bind("click", function(){ focus_add( "ayant un attribut ", "control_world");   active_next_button( ayant_un_attribut_next );  });
+	$el.find("#possessAttributeCondWord").button();
+	$el.find( "#possessAttributeCondWord" ).bind("click", function(){ focus_add( "ayant un attribut ", "control_world");   active_next_button( ayant_un_attribut_next );  });
 	
-	$("#possessAttributValueWord").button();
-	$( "#possessAttributValueWord" ).bind("click", function(){ focus_add( " de valeur ", "control_world");  active_next_button( possessAttributValueWord_next );  });
+	$el.find("#possessAttributValueWord").button();
+	$el.find( "#possessAttributValueWord" ).bind("click", function(){ focus_add( " de valeur ", "control_world");  active_next_button( possessAttributValueWord_next );  });
 	
-	$("#possessAttributValueWordSup").button();
-	$( "#possessAttributValueWordSup" ).bind("click", function(){ focus_add( " de valeur supérieure à ", "control_world");  active_next_button( possessAttributValueWord_next );  });
+	$el.find("#possessAttributValueWordSup").button();
+	$el.find( "#possessAttributValueWordSup" ).bind("click", function(){ focus_add( " de valeur supérieure à ", "control_world");  active_next_button( possessAttributValueWord_next );  });
 	
-	$("#possessAttributValueWordSupEga").button();
-	$( "#possessAttributValueWordSupEga" ).bind("click", function(){ focus_add( " de valeur supérieure ou égale à ", "control_world");  active_next_button( possessAttributValueWord_next );  });
+	$el.find("#possessAttributValueWordSupEga").button();
+	$el.find( "#possessAttributValueWordSupEga" ).bind("click", function(){ focus_add( " de valeur supérieure ou égale à ", "control_world");  active_next_button( possessAttributValueWord_next );  });
 
-	$("#possessAttributValueWordInf").button();
-	$( "#possessAttributValueWordInf" ).bind("click", function(){ focus_add( " de valeur inférieure à ", "control_world");  active_next_button( possessAttributValueWord_next );  });
+	$el.find("#possessAttributValueWordInf").button();
+	$el.find( "#possessAttributValueWordInf" ).bind("click", function(){ focus_add( " de valeur inférieure à ", "control_world");  active_next_button( possessAttributValueWord_next );  });
 		
-	$("#possessAttributValueWordInfEga").button();
-	$( "#possessAttributValueWordInfEga" ).bind("click", function(){ focus_add( " de valeur inférieure ou égale à ", "control_world");  active_next_button( possessAttributValueWord_next );  });
+	$el.find("#possessAttributValueWordInfEga").button();
+	$el.find( "#possessAttributValueWordInfEga" ).bind("click", function(){ focus_add( " de valeur inférieure ou égale à ", "control_world");  active_next_button( possessAttributValueWord_next );  });
 
 	
-	$("#NonpossessAttributeCondWord").button();
-	$( "#NonpossessAttributeCondWord" ).bind("click", function(){ focus_add( " n'ayant pas un attribut ", "control_world");  active_next_button( ayant_un_attribut_next );  });
+	$el.find("#NonpossessAttributeCondWord").button();
+	$el.find( "#NonpossessAttributeCondWord" ).bind("click", function(){ focus_add( " n'ayant pas un attribut ", "control_world");  active_next_button( ayant_un_attribut_next );  });
 	
 	
 	/* 
@@ -820,11 +826,11 @@ function synchroCLN( text ) { document.getElementById("resultSPARQLIntermediaire
 		Pour estimer au fur et à mesure, il faut estimer qu'à chaque condition on teste comme si on mettait un point à la fin...
 		Cela veut dire d'esayer avec 
 	*/
-	$("#pointWorld").button();
-	$( "#pointWorld" ).bind("click", function(){ focus_add( ". ", "End_control_world");   active_next_button( [] ); });
+	$el.find("#pointWorld").button();
+	$el.find( "#pointWorld" ).bind("click", function(){ focus_add( ". ", "End_control_world");   active_next_button( [] ); });
 	
-	$("#add_button").button();
-	$( "#add_button" ).bind("click", function(){ focus_add( ""+$("#add_value").val()+"", "value_world");  for(k=0; k<querylist.length ; k++)
+	$el.find("#add_button").button();
+	$el.find( "#add_button" ).bind("click", function(){ focus_add( ""+$el.find("#add_value").val()+"", "value_world");  for(k=0; k<querylist.length ; k++)
 	{
 	   if( querylist[k][0] == focus ) 
 	   {
@@ -836,20 +842,20 @@ function synchroCLN( text ) { document.getElementById("resultSPARQLIntermediaire
     }
 	});
 	
-	$("#suivipar").button();
-	$( "#suivipar" ).bind("click", function(){ focus_add( "suivi par", "value_world");  active_next_button( suivi_par_next );  });
+	$el.find("#suivipar").button();
+	$el.find( "#suivipar" ).bind("click", function(){ focus_add( "suivi par", "value_world");  active_next_button( suivi_par_next );  });
 	
-	$("#précédépar").button();
-	$( "#précédépar" ).bind("click", function(){ focus_add( "précédé par", "value_world"); active_next_button( suivi_par_next  );   });
+	$el.find("#précédépar").button();
+	$el.find( "#précédépar" ).bind("click", function(){ focus_add( "précédé par", "value_world"); active_next_button( suivi_par_next  );   });
 	
-	$("#virguleWord").button();
-	$("#virguleWord").bind("click", function(){ focus_add( ", ", "value_world"); active_next_button( virguleWord_next );   });
+	$el.find("#virguleWord").button();
+	$el.find("#virguleWord").bind("click", function(){ focus_add( ", ", "value_world"); active_next_button( virguleWord_next );   });
 	
-	$("#etWord").button();
-	$("#etWord").bind("click", function(){ focus_add( "et ", "value_world"); active_next_button( etWord_next );    });
+	$el.find("#etWord").button();
+	$el.find("#etWord").bind("click", function(){ focus_add( "et ", "value_world"); active_next_button( etWord_next );    });
 	
-	$("#maj_model_trace").button();
-	$("#maj_model_trace").bind("click", function(){  $("#model").value  = 
+	$el.find("#maj_model_trace").button();
+	$el.find("#maj_model_trace").bind("click", function(){  $el.find("#model").value  = 
 	create_model_samotrace( "http://dsi-liris-silex.univ-lyon1.fr/m2ia/ktbs/base-samotraces-transformations/Trace-samo-trans/@obsels"); 
 		for(i=0; i< querylist.length; i++)
 		{
@@ -860,115 +866,115 @@ function synchroCLN( text ) { document.getElementById("resultSPARQLIntermediaire
 		
 	});
 	
-	$("#typeCond").button();
-	$("#typeCond").bind("click", function(){ focus_add( "de type ", "value_world", "add"); active_next_button( de_type_next );     });
+	$el.find("#typeCond").button();
+	$el.find("#typeCond").bind("click", function(){ focus_add( "de type ", "value_world", "add"); active_next_button( de_type_next );     });
 	
-	$("#attributeCountWord").button();
-	$("#attributeCountWord").bind("click", function(){ focus_add( " attibuts ", "control_world"); active_next_button( de_type_next );    });
+	$el.find("#attributeCountWord").button();
+	$el.find("#attributeCountWord").bind("click", function(){ focus_add( " attibuts ", "control_world"); active_next_button( de_type_next );    });
 	
-	$("#lesattributsWord").button();
-	$("#lesattributsWord").bind("click", function(){ focus_add( " les attibuts ", "control_world"); active_next_button( lesattributsWord_next );    });
+	$el.find("#lesattributsWord").button();
+	$el.find("#lesattributsWord").bind("click", function(){ focus_add( " les attibuts ", "control_world"); active_next_button( lesattributsWord_next );    });
 	
 	
-	$( "#supprimer" ).button( );
-	$( "#supprimer" ).bind("click", function() { remove();  } );
+	$el.find( "#supprimer" ).button( );
+	$el.find( "#supprimer" ).bind("click", function() { remove();  } );
 	
-	$("#parmi_jecherche").button();
-	$("#parmi_jecherche").bind("click", function(){ focus_add( ", je cherche à ", "value_world"); active_next_button( je_cherche_a_next );   });
+	$el.find("#parmi_jecherche").button();
+	$el.find("#parmi_jecherche").bind("click", function(){ focus_add( ", je cherche à ", "value_world"); active_next_button( je_cherche_a_next );   });
 	
 	/* Nouveaux éléments */
-	$("#luimeme").button();
-	$("#luimeme").bind("click", function(){ focus_add( "lui même ", "control_world"); active_next_button(luimeme_next );    });
+	$el.find("#luimeme").button();
+	$el.find("#luimeme").bind("click", function(){ focus_add( "lui même ", "control_world"); active_next_button(luimeme_next );    });
 	
-	$("#directementsuivipar").button();
-	$("#directementsuivipar").bind("click", function(){ focus_add( "directement suivi par ", "control_world"); active_next_button( suivi_par_next  );    });
+	$el.find("#directementsuivipar").button();
+	$el.find("#directementsuivipar").bind("click", function(){ focus_add( "directement suivi par ", "control_world"); active_next_button( suivi_par_next  );    });
 	
-	$("#directementprécédépar").button();
-	$("#directementprécédépar").bind("click", function(){ focus_add( "directement précédé par ", "control_world"); active_next_button( suivi_par_next  );    });
+	$el.find("#directementprécédépar").button();
+	$el.find("#directementprécédépar").bind("click", function(){ focus_add( "directement précédé par ", "control_world"); active_next_button( suivi_par_next  );    });
 	
 	/* Boutons de début de phrase */
-	$( ".jecherche" ).button( );
-	$( ".jecherche" ).bind("click", function() { newlist( 'Je cherche à ', je_cherche_a_next);  } );
+	$el.find( ".jecherche" ).button( );
+	$el.find( ".jecherche" ).bind("click", function() { newlist($el, 'Je cherche à ', je_cherche_a_next);  } );
 	
-	$( ".soit" ).button( );
-	$( ".soit" ).bind("click", function() { newlist('Soit ', soit_next); } );
+	$el.find( ".soit" ).button( );
+	$el.find( ".soit" ).bind("click", function() { newlist($el, 'Soit ', soit_next); } );
 	
-	$( ".jenomme" ).button( );
-	$( ".jenomme" ).bind("click", function() { newlist('Je nomme ', je_nomme_next);  } );
+	$el.find( ".jenomme" ).button( );
+	$el.find( ".jenomme" ).bind("click", function() { newlist($el, 'Je nomme ', je_nomme_next);  } );
 		
-	$( ".parmi" ).button( );
-	$( ".parmi" ).bind("click", function() { newlist('Parmi ', parmi_next);  } );
+	$el.find( ".parmi" ).button( );
+	$el.find( ".parmi" ).bind("click", function() { newlist($el, 'Parmi ', parmi_next);  } );
 	
-	$( ".je_garde" ).button( );
-	$( ".je_garde" ).bind("click", function() { newlist('Je garde seulement ', [ "#add_button", "#pointWorld" ]);  } );
-	$(".je_garde").button( "option", "disabled", false );
+	$el.find( ".je_garde" ).button( );
+	$el.find( ".je_garde" ).bind("click", function() { newlist($el, 'Je garde seulement ', [ "#add_button", "#pointWorld" ]);  } );
+	$el.find(".je_garde").button( "option", "disabled", false );
 	
 	// test de sauvegarde
-	$( "#my_save" ).button( );
-	$( "#my_save" ).bind("click", function() { save( $('#my_indic_title').val(),
-													 $('#my_indic_desc').val(),
-													 $('#resultLangage').val(),
-													 parser.parse(parserCLN.parse($('#resultLangage').val()))
+	$el.find( "#my_save" ).button( );
+	$el.find( "#my_save" ).bind("click", function() { save( $el.find('#my_indic_title').val(),
+													 $el.find('#my_indic_desc').val(),
+													 $el.find('#resultLangage').val(),
+													 parser.parse(parserCLN.parse($el.find('#resultLangage').val()))
 													 ) } );
 
 	// test de chargement
-	$( "#my_load" ).button( );
-	$( "#my_load" ).bind("click", function() { my_load( $('#file_load').val()) } );
+	$el.find( "#my_load" ).button( );
+	$el.find( "#my_load" ).bind("click", function() { my_load( $el.find('#file_load').val()) } );
 	
 
 													 
 	// Pour rafraichir la requête sans prendre depuis l'interface
-	$('#refresh').button();
-	$( "#refresh" ).bind("click", function() { 
+	$el.find('#refresh').button();
+	$el.find( "#refresh" ).bind("click", function() { 
 	var other_response = call_base_by_fuseki( document.getElementById("resultSPARQL").value, "http://localhost:3030/sparql", "by_sparql"); 
 	/* Call de ajax ! */
 	var json_response = call_base( document.getElementById("resultSPARQL").value, document.getElementById("base_uri").value, "resultJSON"); 
 	} );
 	 
 	/* Supprimer toujours fini */
-	$("#supprimer").button( "option", "disabled", false );
+	$el.find("#supprimer").button( "option", "disabled", false );
 	
-	$("#json_to_obsel").button();
-	$("#json_to_obsel").bind("click", function(){  transform_to_trace( json_reponse); })
+	$el.find("#json_to_obsel").button();
+	$el.find("#json_to_obsel").bind("click", function(){  transform_to_trace( json_reponse); })
 	
 	/*
 	changeFocusElement( "#query" );
 	active_next_button( je_cherche_a_next );
 	alert( querylist[0] ); 
 	*/
-	$( ".etapes" ).tabs();
+	$el.find( ".etapes" ).tabs();
 	
 	
 	/* Mise en place d'une première liste qui fait le tout. */
-	newlist('Je cherche à', je_cherche_a_next);
-	init();
+	newlist($el, 'Je cherche à', je_cherche_a_next);
+	//init();
 	
 	/*
 	<button id="suivipar">suivi par</button>
 	<button id="précédépar">précédé par</button>
 	*/
 	
-	$( ".testliste" ).sortable( );
-	$( ".otherinnerlist").sortable({delay: 200});
-	//$( ".testliste").jScrollPane();
+	$el.find( ".testliste" ).sortable( );
+	$el.find( ".otherinnerlist").sortable({delay: 200});
+	//$el.find( ".testliste").jScrollPane();
 	
 	
-	$( "#query" ).click( function(){  changeFocusElement( "#query"); } );
+	$el.find( "#query" ).click( function(){  changeFocusElement( "#query"); } );
 	
-	$( "#trace_modele").on("change keyup paste",  function(){synchroTraceModel(); });
-	//$( "#trace_modele").change( function(){synchroTraceModel(); });
+	$el.find( "#trace_modele").on("change keyup paste",  function(){synchroTraceModel(); });
+	//$el.find( "#trace_modele").change( function(){synchroTraceModel(); });
 	
 	
 	/* activation de la liste des attributs et des valeurs d'attibuts. */
-	//$("#attribut").selectable();
+	//$el.find("#attribut").selectable();
 	
-	//$("#valeurs").sortable();
-	$("#valeurs").selectable();
+	//$el.find("#valeurs").sortable();
+	$el.find("#valeurs").selectable();
 	
 
 	
-	$( "#attribut" ).tabs();
+	$el.find( "#attribut" ).tabs();
 	
-}); 
+}; 
 	
   
