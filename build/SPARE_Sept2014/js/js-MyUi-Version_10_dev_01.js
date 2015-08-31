@@ -54,7 +54,7 @@ function save( title, desc, query_CLN, query_SPARQL )
  =================================
 
 */
-function my_load( query )
+function my_load($el, query )
 {
 	var results = [];
 	results = parserLoader.parse(query);
@@ -65,8 +65,8 @@ function my_load( query )
 	    newlist($el, results[i][0], je_cherche_a_next);
 		for( j=1; j<results[i].length; j++)
 		{
-		  focus_add( results[i][j], "control_world");
-		  active_next_button( possessAttributValueWord_next );
+		  focus_add($el, results[i][j], "control_world");
+		  active_next_button($el,  possessAttributValueWord_next );
 		}
 	}
  
@@ -219,23 +219,23 @@ Il me faut donc faire une version clair de la grammaire actuelle pour mettre à 
 	Precondition  : Il existe un "focus" valide qui est une li. la liste est au pire une liste vide.
 	PostCondition : L'ensemble des boutons ayant la classe grammar_concerned sont désactivés, sauf ceux de la liste de paramètre. La liste "liste" est ajoutée à la liste correspondante dans la variable query_liste (ie celle dont le premier élément == focus)
  */
- function active_next_button( liste )
+ function active_next_button($el, liste)
  {
 	var i = 0;
     // On désactive tout
-	$(".grammar_concerned").button(  );
-	//$(".grammar_concerned").button( "option", "disabled", false );
+	$el.find(".grammar_concerned").button(  );
+	//$el.find(".grammar_concerned").button( "option", "disabled", false );
 	// !!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!
 	// DESACTIVIATION ENLEVEE POUR LE MOMENT, L'interface ne suit plus la grammaire
 	// 2 juin : réactivation de la grammaire
-	// $(".grammar_concerned").button( "option", "disabled", false );
-	$(".grammar_concerned").button( "option", "disabled", true );
-	//$( ".jecherche" ).button( "option", "disabled", false );
+	// $el.find(".grammar_concerned").button( "option", "disabled", false );
+	$el.find(".grammar_concerned").button( "option", "disabled", true );
+	//$el.find( ".jecherche" ).button( "option", "disabled", false );
 	
 	// On active tout les éléments de la liste.
 	for (i=0; i<liste.length; i++) 
 	{
-		$( liste[i] ).button( "option", "disabled", false );
+		$el.find( liste[i] ).button( "option", "disabled", false );
     }
 	
 	for(k=0; k<querylist.length ; k++)
@@ -252,6 +252,7 @@ Il me faut donc faire une version clair de la grammaire actuelle pour mettre à 
  */
   function active_next( liste )
  {
+  console.log("function active_next( liste )--------------------------------");
 	var i = 0;
     // On désactive tout
 	$(".grammar_concerned").button(  );
@@ -298,7 +299,7 @@ une classe différente. On doit aussi pseudo parser pour les disponibilité d'é
 	{
 	   if( querylist[k][0] == focus ) 
 	   { 
-	    active_next_button( querylist[k].pop() );
+	    active_next_button($el, querylist[k].pop() );
 	   }
     }
  }
@@ -307,7 +308,7 @@ une classe différente. On doit aussi pseudo parser pour les disponibilité d'é
 	Supression d'un élément.
 	Se fait automatiquement sur le focus... Pas de Ctrl-Z ^^"
  */
- function remove()
+ function remove($el)
  {
   	for(k=0; k<querylist.length ; k++)
 	{
@@ -316,8 +317,8 @@ une classe différente. On doit aussi pseudo parser pour les disponibilité d'é
 	      if( querylist[k].length <= 2 )
 		  {
 		    //alert(querylist[k].length);
-			$(focus).remove();
-			$("#content_"+focus.slice(1) ).remove(); 
+			$(focus).remove($el);
+			$("#content_"+focus.slice(1) ).remove($el);
 			/* Recherche d'un nouvel élément. */
 			var new_focus = $(conteneur).children();
 			
@@ -338,9 +339,9 @@ une classe différente. On doit aussi pseudo parser pour les disponibilité d'é
 			 new_activation = querylist[k].pop();
 			 supprimer_last = focus + " li:last";
 			 //alert(querylist[k].length + "  :  " + new_activation + "\n"+ newbee_activation);
-			 $(supprimer_last).remove();
+			 $(supprimer_last).remove($el);
 			 //alert( new_activation );
-			 active_next_button( new_activation );				 
+			 active_next_button($el,  new_activation );				 
 		  }
 	 }
 	   
@@ -379,24 +380,24 @@ une classe différente. On doit aussi pseudo parser pour les disponibilité d'é
 	
 	/* Ajout pour le bouton de suppression */
 	querylist.push(new Array(focus) );
-	active_next_button( next_list );
+	active_next_button($el,  next_list );
 	
 	
  }
 
  /* Ajout d'un mot général à une liste */
- function addworld( liste, mot, type )
+ function addworld($el, liste, mot, type )
  {
  	id++;
 	chaine = "" + type + id;
-	$(liste).append('<li id="'+ chaine +'" class="mots" >'+ mot +'</li>');
+	$el.find(liste).append('<li id="'+ chaine +'" class="mots" >'+ mot +'</li>');
 
  }
   
   /* Ajout d'un mot au focus */
-  function focus_add( mot, type)
+  function focus_add($el, mot, type)
   {
-	addworld( focus, mot, type);
+	addworld($el, focus, mot, type);
   }
   
   /* restriction et element : aucune pour le moment. */
@@ -409,28 +410,31 @@ une classe différente. On doit aussi pseudo parser pour les disponibilité d'é
    * Extraction de la séquence et envoi au parser 
    * Dans la version actuelle, elle ne fait que l'affichage dans une zone de texte mal placée.
   */
- function extract_query( liste )
+ function extract_query($el, liste )
   {
 	  var result = "";
-	  $(liste).each( function( index ){ result += $(this).text().trim();} ); 
+	  $el.find(liste).each( function( index ){
+       result += $(this).text().trim();
+     });
 	  //alert( result + " : " +result.search('.'));
 	  if(result.indexOf('.') <= 0 && result.indexOf(';') <= 0) { result += ' .'; }
 	  console.log( result );
-	  document.getElementById("resultLangage").value = result; 
+	  
+    $el.find('#resultLangage').val(result);
 	  to_send_parser = result;
 	  
 	  
-	  synchroCLN(result);
+	  synchroCLN($el, result);
 	  
 	  /* Call de ajax ! */
-	  var json_response = call_base( document.getElementById("resultSPARQL").value, document.getElementById("base_uri").value, "resultJSON");
+	  var json_response = call_base($el, $el.find("#resultSPARQL").val(), $el.find("#base_uri").val(), "resultJSON");
 	  
      return result;
   }
 
   
   
- function extract_all_query( )
+ function extract_all_query($el)
   {
 	  var result = "";
 	  
@@ -438,12 +442,12 @@ une classe différente. On doit aussi pseudo parser pour les disponibilité d'é
 	  
 	  $(childs).each( function( index ){ result += $(this).first().text().trim(); } ); 
 	  console.log( result );
-	  document.getElementById("resultLangage").value = result; 
+	  $el.find("#resultLangage").val(result); 
 	  to_send_parser = result;
-	  synchroCLN(result);
+	  synchroCLN($el, result);
 	  
 	  /* Call de ajax ! */
-	  var json_response = call_base( document.getElementById("resultSPARQL").value, document.getElementById("base_uri").value, "resultJSON");
+	  var json_response = call_base($el, $el.find("#resultSPARQL").val(), $el.find("#base_uri").val(), "resultJSON");
 	  
 	  
 	  
@@ -460,43 +464,45 @@ une classe différente. On doit aussi pseudo parser pour les disponibilité d'é
   
   /* default-graph-uri=http%3A%2F%2Flocalhost%3A8001%2FAlienBase%2Fcdemo%2F%40obsels */
     /* Fonction qui pose le JSON reusltant dans un element ayant une value */
- function call_base_by_fuseki( SPARQL_QUERY, url_base, element_ID)
- {
- 
-   /* Mise à jour du nombre de requête en attente */
-	request_pending++;
-	update_pending();
- 
-  /* Appel Ajax vers la base.	  */
-  var retour = 
-  $.ajax({
-	//url: 'http://localhost:8001/AlienBase/AllenTrace/@obsels',
-	url: url_base,
-	dataType: 'json', 
-	data: { 
-		//	query: "SELECT * WHERE { ?s ?p ?o }", 
-		query: SPARQL_QUERY, 
-		'default-graph-uri' : "http://localhost:8001/AlienBase/cdemo/@obsels", 
-		//default-graph-uri : url_base
-		limit: 'none',
-		infer: 'true',
-		Accept: 'application/sparql-results+json'
-	},
-	success: function(html){  
-	 document.getElementById(element_ID).value = retour.responseText;
-	 var obj = $.parseJSON(retour.responseText);
-     json_reponse = obj;
-	 request_pending--;update_pending();
-	   }, 
-	error:  function(html){ alert("Echec de l'execution de la requête SPARQL sur la base.");request_pending--;update_pending();
-	}
-	});
-	
-	return retour;
-} /**/
+  function call_base_by_fuseki($el, SPARQL_QUERY, url_base, element_ID)
+  {
+    
+    /* Mise à jour du nombre de requête en attente */
+    request_pending++;
+    update_pending();
+    
+    /* Appel Ajax vers la base.	  */
+    var retour = 
+    $.ajax({
+      //url: 'http://localhost:8001/AlienBase/AllenTrace/@obsels',
+      url: url_base,
+      dataType: 'json', 
+      data: { 
+        //	query: "SELECT * WHERE { ?s ?p ?o }", 
+        query: SPARQL_QUERY, 
+        'default-graph-uri' : "http://localhost:8001/AlienBase/cdemo/@obsels", 
+        //default-graph-uri : url_base
+        limit: 'none',
+        infer: 'true',
+        Accept: 'application/sparql-results+json'
+      },
+      success: function(html){  
+        $el.find('#' + element_ID).val(retour.responseText);
+        var obj = $.parseJSON(retour.responseText);
+        json_reponse = obj;
+        request_pending--;update_pending();
+      }, 
+      error:  function(html){ 
+        alert("Echec de l'execution de la requête SPARQL sur la base.");
+        request_pending--;
+        update_pending();
+      }
+    });
+    return retour;
+  } /**/
 
   /* Fonction qui pose le JSON reusltant dans un element ayant une value */
- function call_base( SPARQL_QUERY, url_base, element_ID)
+ function call_base($el, SPARQL_QUERY, url_base, element_ID) // TODO CALLER
  {
  
    /* Mise à jour du nombre de requête en attente */
@@ -517,7 +523,7 @@ une classe différente. On doit aussi pseudo parser pour les disponibilité d'é
 		Accept: 'application/sparql-results+json'
 	},
 	success: function(html){  
-	 document.getElementById(element_ID).value = retour.responseText;
+	 $el.find('#' + element_ID).val(retour.responseText);
 	 var obj = $.parseJSON(retour.responseText);
      json_reponse = obj;
 	 request_pending--;update_pending();
@@ -531,7 +537,7 @@ une classe différente. On doit aussi pseudo parser pour les disponibilité d'é
   
   
 /* Fonction qui récupère les valeurs récupérées pour en faire une liste séparée par des \n */
- function call_base_list( SPARQL_QUERY, url_base, element_ID)
+ function call_base_list($el, SPARQL_QUERY, url_base, element_ID)
  {
  
 	/* Mise à jour du nombre de requête en attente */
@@ -557,11 +563,12 @@ une classe différente. On doit aussi pseudo parser pour les disponibilité d'é
 	var chaine_result = "";
 	for(i=0; i< obj.results.bindings.length; i++)
 	{
-		chaine_result += obj.results.bindings[i].o.value + "\n\r";
+		chaine_result += obj.results.bindings[i].o.val() + "\n\r";
 	}
 	request_pending--;update_pending();
-	//document.getElementById(element_ID).value = retour.responseText;}, 
-	document.getElementById(element_ID).value = chaine_result;}, 
+	//document.getElementById(element_ID).val() = retour.responseText;}, 
+	$el.find('#' + element_ID).val(chaine_result);
+  }, 
 	error:  function(html){ alert("Echec de l'execution de la requête SPARQL sur la base.");request_pending--;update_pending();}
 	
 	});
@@ -572,7 +579,7 @@ une classe différente. On doit aussi pseudo parser pour les disponibilité d'é
  
   
  /* Fonction qui cree la liste des attributs avec les valeurs associées */
- function call_base_list_2( SPARQL_QUERY, url_base, element_ID1, element_ID2)
+ function call_base_list_2($el, SPARQL_QUERY, url_base, element_ID1, element_ID2)
  {
  
 	/* Mise à jour du nombre de requête en attente */
@@ -598,19 +605,19 @@ une classe différente. On doit aussi pseudo parser pour les disponibilité d'é
 	var chaine_result = "";
 	for(i=0; i< obj.results.bindings.length; i++)
 	{
-		chaine_result += obj.results.bindings[i].o.value + "\n\r";
+		chaine_result += obj.results.bindings[i].o.value + "\n\r"; // TODO CHECKME
 	}
 	request_pending--;update_pending();
 	//document.getElementById(element_ID).value = retour.responseText;}, 
-	attribut = document.getElementById(element_ID1); 
-	element = document.getElementById(element_ID2);
+	attribut = $el.find('#' + element_ID1); 
+	element = $el.find('#' + element_ID2);
 	$(element).empty();
 	$(attribut).empty();
 	list_attributes = new Array();
 	/* Génération de la structure de données contenant les éléments */
 	for(i=0; i< obj.results.bindings.length; i++)
 	{
-		string_current = obj.results.bindings[i].p.value;
+		string_current = obj.results.bindings[i].p.value; // TODO CHECKME
 		found_idk = -1;
 		for( k=0; k< list_attributes.length; k++)
 		{
@@ -620,7 +627,7 @@ une classe différente. On doit aussi pseudo parser pour les disponibilité d'é
 			}
 		}
 		if( found_idk == -1) { found_idk = list_attributes.length; list_attributes.push([ string_current,  new Array() ]); }
-		list_attributes[found_idk][1].push( obj.results.bindings[i].o.value );
+		list_attributes[found_idk][1].push( obj.results.bindings[i].o.value ); // TODO CHECKME
 	}
 	
 	
@@ -655,8 +662,9 @@ une classe différente. On doit aussi pseudo parser pour les disponibilité d'é
 	
 	
 	},  
-	//element = document.getElementById(element_ID1).value = chaine_result;},  
-	error:  function(html){ alert("Echec de l'execution de la requête SPARQL sur la base.");request_pending--;update_pending();}
+	error:  function(html){ 
+    alert("Echec de l'execution de la requête SPARQL sur la base.");request_pending--;update_pending();
+  }
 	
 	});
 	
@@ -672,16 +680,20 @@ une classe différente. On doit aussi pseudo parser pour les disponibilité d'é
   
 /* Ces fonctions sont copiées collées de la version No Interface */
 /* 	Fonction d'appel simple au parser*/
-function synchro( text ) { document.getElementById("resultSPARQL").value = parser.parse(text) }
+function synchro( text ) { $el.find("#resultSPARQL").val(parser.parse(text)); }
 			
 /* Autre fonction d'appel simple */
-function synchroCLN( text ) { document.getElementById("resultSPARQLIntermediaire").value = parserCLN.parse(text); document.getElementById("resultSPARQL").value = parser.parse(document.getElementById("resultSPARQLIntermediaire").value);  }
+function synchroCLN($el, text ) {
+  var resultSPARQLIntermediaire = parserCLN.parse(text);
+  $el.find("#resultSPARQLIntermediaire").val(resultSPARQLIntermediaire);
+  $el.find("#resultSPARQL").val(parser.parse(resultSPARQLIntermediaire));
+}
  
 /* Fonction de mise a jour de la variable trace_modelURI */
- function synchroTraceModel(){ 
+ function synchroTraceModel($el){
  //alert("Test");
- trace_modelURI = document.getElementById("trace_modele").value.trim();
- synchroCLN(document.getElementById("resultLangage").value); 
+ trace_modelURI = $el.find("#trace_modele").val().trim();
+ synchroCLN($el, $el.find("#resultLangage").val()); 
  
  }
 	
@@ -728,9 +740,9 @@ sparelnc.init = function (container) {
 		 ?sobs0 :hasEnd ?dateEndobs0 . \
 		 ?sobs0 :hasBegin ?dateBeginobs0 . \
 		\} group by ?p ?o"; 
-		var json_response1 = call_base_list( query_Sparql_value, document.getElementById("base_uri").value, "value_attributes_trace");
-		var json_response2 = call_base_list( query_Sparql_attribute, document.getElementById("base_uri").value, "name_attributes_trace");
-		var json_response3 = call_base_list_2( query_Sparql_attribute, document.getElementById("base_uri").value, "attribut", "valeurs");
+		var json_response1 = call_base_list($el, query_Sparql_value, $el.find("#base_uri").val(), "value_attributes_trace");
+		var json_response2 = call_base_list($el, query_Sparql_attribute, $el.find("#base_uri").val(), "name_attributes_trace");
+		var json_response3 = call_base_list_2($el, query_Sparql_attribute, $el.find("#base_uri").val(), "attribut", "valeurs");
 			
 		
 	});
@@ -757,68 +769,68 @@ sparelnc.init = function (container) {
 		 ?sobs0 :hasEnd ?dateEndobs0 . \
 		 ?sobs0 :hasBegin ?dateBeginobs0 . \
 		\} group by ?p ?o"; 
-		var json_response1 = call_base_list( query_Sparql_value, document.getElementById("base_uri").value, "value_attributes_trace");
-		var json_response2 = call_base_list( query_Sparql_attribute, document.getElementById("base_uri").value, "name_attributes_trace");
-		var json_response3 = call_base_list_2( query_Sparql_attribute, document.getElementById("base_uri").value, "attribut", "valeurs");
+		var json_response1 = call_base_list($el, query_Sparql_value, $el.find("#base_uri").val(), "value_attributes_trace");
+		var json_response2 = call_base_list($el, query_Sparql_attribute, $el.find("#base_uri").val(), "name_attributes_trace");
+		var json_response3 = call_base_list_2($el, query_Sparql_attribute, $el.find("#base_uri").val(), "attribut", "valeurs");
 			
 		
 	});
 	/* Bouton temporaire de création de la requête */
 	$el.find( ".processquery" ).button( );
-	$el.find( ".processquery" ).bind("click", function(){extract_query( focus ); });
+	$el.find( ".processquery" ).bind("click", function(){extract_query($el, focus ); });
 	$el.find( ".processquery").button( "option", "disabled", false );
 	
 	$el.find( ".processquery_list" ).button( );
-	$el.find( ".processquery_list" ).bind("click", function(){extract_all_query( ); });
+	$el.find( ".processquery_list" ).bind("click", function(){extract_all_query($el); });
 	$el.find( ".processquery_list").button( "option", "disabled", false );
 		
 	/* Boutons qui rajoutent des éléments à la requête sélectionnée.  */
 	$el.find("#getWord").button();
-	$el.find( "#getWord" ).bind("click", function(){ focus_add( " récupérer ", "control_world");  active_next_button( recuperer_next );    });
+	$el.find( "#getWord" ).bind("click", function(){ focus_add($el, " récupérer ", "control_world");  active_next_button($el,  recuperer_next );    });
 	
 	$el.find("#countWord").button();
-	$el.find( "#countWord" ).bind("click", function(){ focus_add( " compter le nombre d'", "control_world");   active_next_button( compter_next );    });
+	$el.find( "#countWord" ).bind("click", function(){ focus_add($el, " compter le nombre d'", "control_world");   active_next_button($el,  compter_next );    });
 	
 	$el.find("#countWord_short").button();
-	$el.find( "#countWord_short" ).bind("click", function(){ focus_add( " le nombre d'", "control_world");   active_next_button( compter_next );    });
+	$el.find( "#countWord_short" ).bind("click", function(){ focus_add($el, " le nombre d'", "control_world");   active_next_button($el,  compter_next );    });
 	
 	
 	$el.find("#lesobselWord").button();
-	$el.find( "#lesobselWord" ).bind("click", function(){ focus_add( " les obsels ", "control_world");   active_next_button( lesobselWord_next );    });
+	$el.find( "#lesobselWord" ).bind("click", function(){ focus_add($el, " les obsels ", "control_world");   active_next_button($el,  lesobselWord_next );    });
 	
 	$el.find("#unobselWord").button();
-	$el.find( "#unobselWord" ).bind("click", function(){ focus_add( " un obsel ", "control_world");  active_next_button( unobselWord_next );  });
+	$el.find( "#unobselWord" ).bind("click", function(){ focus_add($el, " un obsel ", "control_world");  active_next_button($el,  unobselWord_next );  });
 	
 	$el.find("#obselWord").button();
-	$el.find( "#obselWord" ).bind("click", function(){ focus_add( "obsels ", "control_world");  active_next_button( obselWord_next );   });
+	$el.find( "#obselWord" ).bind("click", function(){ focus_add($el, "obsels ", "control_world");  active_next_button($el,  obselWord_next );   });
 	
 	$el.find("#attributesWord").button();
-	$el.find( "#attributesWord" ).bind("click", function(){ focus_add( "les attributs ", "control_world");    });
+	$el.find( "#attributesWord" ).bind("click", function(){ focus_add($el, "les attributs ", "control_world");    });
 	
 	$el.find("#attributeWord").button();
-	$el.find( "#attributeWord" ).bind("click", function(){ focus_add( "l'attribut ", "control_world");    });
+	$el.find( "#attributeWord" ).bind("click", function(){ focus_add($el, "l'attribut ", "control_world");    });
 	
 	$el.find("#possessAttributeCondWord").button();
-	$el.find( "#possessAttributeCondWord" ).bind("click", function(){ focus_add( "ayant un attribut ", "control_world");   active_next_button( ayant_un_attribut_next );  });
+	$el.find( "#possessAttributeCondWord" ).bind("click", function(){ focus_add($el, "ayant un attribut ", "control_world");   active_next_button($el,  ayant_un_attribut_next );  });
 	
 	$el.find("#possessAttributValueWord").button();
-	$el.find( "#possessAttributValueWord" ).bind("click", function(){ focus_add( " de valeur ", "control_world");  active_next_button( possessAttributValueWord_next );  });
+	$el.find( "#possessAttributValueWord" ).bind("click", function(){ focus_add($el, " de valeur ", "control_world");  active_next_button($el,  possessAttributValueWord_next );  });
 	
 	$el.find("#possessAttributValueWordSup").button();
-	$el.find( "#possessAttributValueWordSup" ).bind("click", function(){ focus_add( " de valeur supérieure à ", "control_world");  active_next_button( possessAttributValueWord_next );  });
+	$el.find( "#possessAttributValueWordSup" ).bind("click", function(){ focus_add($el, " de valeur supérieure à ", "control_world");  active_next_button($el,  possessAttributValueWord_next );  });
 	
 	$el.find("#possessAttributValueWordSupEga").button();
-	$el.find( "#possessAttributValueWordSupEga" ).bind("click", function(){ focus_add( " de valeur supérieure ou égale à ", "control_world");  active_next_button( possessAttributValueWord_next );  });
+	$el.find( "#possessAttributValueWordSupEga" ).bind("click", function(){ focus_add($el, " de valeur supérieure ou égale à ", "control_world");  active_next_button($el,  possessAttributValueWord_next );  });
 
 	$el.find("#possessAttributValueWordInf").button();
-	$el.find( "#possessAttributValueWordInf" ).bind("click", function(){ focus_add( " de valeur inférieure à ", "control_world");  active_next_button( possessAttributValueWord_next );  });
+	$el.find( "#possessAttributValueWordInf" ).bind("click", function(){ focus_add($el, " de valeur inférieure à ", "control_world");  active_next_button($el,  possessAttributValueWord_next );  });
 		
 	$el.find("#possessAttributValueWordInfEga").button();
-	$el.find( "#possessAttributValueWordInfEga" ).bind("click", function(){ focus_add( " de valeur inférieure ou égale à ", "control_world");  active_next_button( possessAttributValueWord_next );  });
+	$el.find( "#possessAttributValueWordInfEga" ).bind("click", function(){ focus_add($el, " de valeur inférieure ou égale à ", "control_world");  active_next_button($el,  possessAttributValueWord_next );  });
 
 	
 	$el.find("#NonpossessAttributeCondWord").button();
-	$el.find( "#NonpossessAttributeCondWord" ).bind("click", function(){ focus_add( " n'ayant pas un attribut ", "control_world");  active_next_button( ayant_un_attribut_next );  });
+	$el.find( "#NonpossessAttributeCondWord" ).bind("click", function(){ focus_add($el, " n'ayant pas un attribut ", "control_world");  active_next_button($el,  ayant_un_attribut_next );  });
 	
 	
 	/* 
@@ -827,36 +839,36 @@ sparelnc.init = function (container) {
 		Cela veut dire d'esayer avec 
 	*/
 	$el.find("#pointWorld").button();
-	$el.find( "#pointWorld" ).bind("click", function(){ focus_add( ". ", "End_control_world");   active_next_button( [] ); });
+	$el.find( "#pointWorld" ).bind("click", function(){ focus_add($el, ". ", "End_control_world");   active_next_button($el,  [] ); });
 	
 	$el.find("#add_button").button();
-	$el.find( "#add_button" ).bind("click", function(){ focus_add( ""+$el.find("#add_value").val()+"", "value_world");  for(k=0; k<querylist.length ; k++)
+	$el.find( "#add_button" ).bind("click", function(){ focus_add($el, ""+$el.find("#add_value").val()+"", "value_world");  for(k=0; k<querylist.length ; k++)
 	{
 	   if( querylist[k][0] == focus ) 
 	   {
 			 new_activation = querylist[k].pop();
-			 active_next_button( new_activation );
-			 active_next_button( new_activation );				 
+			 active_next_button($el,  new_activation );
+			 active_next_button($el,  new_activation );				 
 	 }
 	   
     }
 	});
 	
 	$el.find("#suivipar").button();
-	$el.find( "#suivipar" ).bind("click", function(){ focus_add( "suivi par", "value_world");  active_next_button( suivi_par_next );  });
+	$el.find( "#suivipar" ).bind("click", function(){ focus_add($el, "suivi par", "value_world");  active_next_button($el,  suivi_par_next );  });
 	
 	$el.find("#précédépar").button();
-	$el.find( "#précédépar" ).bind("click", function(){ focus_add( "précédé par", "value_world"); active_next_button( suivi_par_next  );   });
+	$el.find( "#précédépar" ).bind("click", function(){ focus_add($el, "précédé par", "value_world"); active_next_button($el,  suivi_par_next  );   });
 	
 	$el.find("#virguleWord").button();
-	$el.find("#virguleWord").bind("click", function(){ focus_add( ", ", "value_world"); active_next_button( virguleWord_next );   });
+	$el.find("#virguleWord").bind("click", function(){ focus_add($el, ", ", "value_world"); active_next_button($el,  virguleWord_next );   });
 	
 	$el.find("#etWord").button();
-	$el.find("#etWord").bind("click", function(){ focus_add( "et ", "value_world"); active_next_button( etWord_next );    });
+	$el.find("#etWord").bind("click", function(){ focus_add($el, "et ", "value_world"); active_next_button($el,  etWord_next );    });
 	
 	$el.find("#maj_model_trace").button();
-	$el.find("#maj_model_trace").bind("click", function(){  $el.find("#model").value  = 
-	create_model_samotrace( "http://dsi-liris-silex.univ-lyon1.fr/m2ia/ktbs/base-samotraces-transformations/Trace-samo-trans/@obsels"); 
+	$el.find("#maj_model_trace").bind("click", function(){  
+    $el.find("#model").val(create_model_samotrace( "http://dsi-liris-silex.univ-lyon1.fr/m2ia/ktbs/base-samotraces-transformations/Trace-samo-trans/@obsels")); 
 		for(i=0; i< querylist.length; i++)
 		{
 		  if( querylist[i][0] == focus )
@@ -867,30 +879,30 @@ sparelnc.init = function (container) {
 	});
 	
 	$el.find("#typeCond").button();
-	$el.find("#typeCond").bind("click", function(){ focus_add( "de type ", "value_world", "add"); active_next_button( de_type_next );     });
+	$el.find("#typeCond").bind("click", function(){ focus_add($el, "de type ", "value_world", "add"); active_next_button($el,  de_type_next );     });
 	
 	$el.find("#attributeCountWord").button();
-	$el.find("#attributeCountWord").bind("click", function(){ focus_add( " attibuts ", "control_world"); active_next_button( de_type_next );    });
+	$el.find("#attributeCountWord").bind("click", function(){ focus_add($el, " attibuts ", "control_world"); active_next_button($el,  de_type_next );    });
 	
 	$el.find("#lesattributsWord").button();
-	$el.find("#lesattributsWord").bind("click", function(){ focus_add( " les attibuts ", "control_world"); active_next_button( lesattributsWord_next );    });
+	$el.find("#lesattributsWord").bind("click", function(){ focus_add($el, " les attibuts ", "control_world"); active_next_button($el,  lesattributsWord_next );    });
 	
 	
 	$el.find( "#supprimer" ).button( );
-	$el.find( "#supprimer" ).bind("click", function() { remove();  } );
+	$el.find( "#supprimer" ).bind("click", function() { remove($el);  } );
 	
 	$el.find("#parmi_jecherche").button();
-	$el.find("#parmi_jecherche").bind("click", function(){ focus_add( ", je cherche à ", "value_world"); active_next_button( je_cherche_a_next );   });
+	$el.find("#parmi_jecherche").bind("click", function(){ focus_add($el, ", je cherche à ", "value_world"); active_next_button($el, $el,  je_cherche_a_next );   });
 	
 	/* Nouveaux éléments */
 	$el.find("#luimeme").button();
-	$el.find("#luimeme").bind("click", function(){ focus_add( "lui même ", "control_world"); active_next_button(luimeme_next );    });
+	$el.find("#luimeme").bind("click", function(){ focus_add($el, "lui même ", "control_world"); active_next_button($el, $el, luimeme_next );    });
 	
 	$el.find("#directementsuivipar").button();
-	$el.find("#directementsuivipar").bind("click", function(){ focus_add( "directement suivi par ", "control_world"); active_next_button( suivi_par_next  );    });
+	$el.find("#directementsuivipar").bind("click", function(){ focus_add($el, "directement suivi par ", "control_world"); active_next_button($el,  suivi_par_next  );    });
 	
 	$el.find("#directementprécédépar").button();
-	$el.find("#directementprécédépar").bind("click", function(){ focus_add( "directement précédé par ", "control_world"); active_next_button( suivi_par_next  );    });
+	$el.find("#directementprécédépar").bind("click", function(){ focus_add($el, "directement précédé par ", "control_world"); active_next_button($el,  suivi_par_next  );    });
 	
 	/* Boutons de début de phrase */
 	$el.find( ".jecherche" ).button( );
@@ -919,16 +931,16 @@ sparelnc.init = function (container) {
 
 	// test de chargement
 	$el.find( "#my_load" ).button( );
-	$el.find( "#my_load" ).bind("click", function() { my_load( $el.find('#file_load').val()) } );
+	$el.find( "#my_load" ).bind("click", function() { my_load($el, $el.find('#file_load').val()) } );
 	
 
 													 
 	// Pour rafraichir la requête sans prendre depuis l'interface
 	$el.find('#refresh').button();
 	$el.find( "#refresh" ).bind("click", function() { 
-	var other_response = call_base_by_fuseki( document.getElementById("resultSPARQL").value, "http://localhost:3030/sparql", "by_sparql"); 
+	var other_response = call_base_by_fuseki($el, $el.find("#resultSPARQL").val(), "http://localhost:3030/sparql", "by_sparql"); 
 	/* Call de ajax ! */
-	var json_response = call_base( document.getElementById("resultSPARQL").value, document.getElementById("base_uri").value, "resultJSON"); 
+	var json_response = call_base($el, $el.find("#resultSPARQL").val(), $el.find("#base_uri").val(), "resultJSON"); 
 	} );
 	 
 	/* Supprimer toujours fini */
@@ -961,8 +973,8 @@ sparelnc.init = function (container) {
 	
 	$el.find( "#query" ).click( function(){  changeFocusElement( "#query"); } );
 	
-	$el.find( "#trace_modele").on("change keyup paste",  function(){synchroTraceModel(); });
-	//$el.find( "#trace_modele").change( function(){synchroTraceModel(); });
+	$el.find( "#trace_modele").on("change keyup paste",  function(){synchroTraceModel($el); });
+	//$el.find( "#trace_modele").change( function(){synchroTraceModel($el); });
 	
 	
 	/* activation de la liste des attributs et des valeurs d'attibuts. */
