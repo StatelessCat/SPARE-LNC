@@ -1,15 +1,15 @@
 
-body {
+.main-div {
 padding:20px; background-color:#BBB;
  border-radius:4px;
 
 }
-ul { 
+.main-div ul {
 list-style-type: none; margin: 0; padding: 0; 
 margin-bottom: 10px; 
 border-radius:6px;
 }
-li {
+.main-div li {
  margin: 2px;
  padding: 2px;
  width: 200px;
@@ -19,7 +19,7 @@ li {
  }
 
 
-.main-div { 
+.main-div {
  width : 75%; 
  padding : 40px; 
  height : 1200px; 
@@ -30,7 +30,7 @@ li {
  margin-bottom: 10px; 
  }
  
-.resultats { 
+.main-div .resultats {
  width : 75%; 
  padding : 40px; 
  height : 300px; 
@@ -41,7 +41,7 @@ li {
  margin-bottom: 10px; 
  }
   
-.informations { 
+.main-div .informations {
  width : 75%; 
  padding : 40px; 
  height : 150px; 
@@ -52,7 +52,7 @@ li {
  margin-bottom: 10px; 
  }
 
-.etapes { 
+.main-div .etapes {
  width : 75%; 
  padding : 40px; 
  height : 600px; 
@@ -63,7 +63,7 @@ li {
  margin-bottom: 10px; 
  }
  
- .etapes2 { 
+ .main-div .etapes2 {
  width : 75%; 
  padding : 40px; 
  height : 600px; 
@@ -75,19 +75,19 @@ li {
  }
  
  
-.testliste { width : 85%; padding : 40px; height : 250px; background-color:#E3E3E3; box-shadow: -1px 2px 8px 3px rgba(0, 0, 0, 0.3) inset;
+.main-div .testliste { width : 85%; padding : 40px; height : 250px; background-color:#E3E3E3; box-shadow: -1px 2px 8px 3px rgba(0, 0, 0, 0.3) inset;
  border-radius:4px;
  margin-left: auto;
  margin-right: auto;
  overflow : auto;}
 
- .scrollable-element
+ .main-div .scrollable-element
  {
 	height:400px;
 	overflow:auto;
  }
  
-.otherinnerlist { 
+.main-div .otherinnerlist {
  border-radius:1px;
  width : 95%; height : 75px; 
  background-color:#F2F1F1; 
@@ -96,7 +96,7 @@ li {
  margin-right: auto;
  }
 
-.mots {
+.main-div .mots {
  margin: 1px;
  padding: 1px;
  width: auto;
@@ -119,7 +119,7 @@ li {
 } */
 
 /* La liste des attributs */
-.attribut {
+.main-div .attribut {
 /*
  border-radius:1px;
  width : 95%; height : 200px; 
@@ -131,7 +131,7 @@ li {
  }
  
 /* La liste qui affiche les éléments par attribut */
-.valeurs {
+.main-div .valeurs {
 /*
  border-radius:1px;
  width : 95%; height : 200px; 
@@ -145,26 +145,26 @@ li {
  
  /* Les listes d'éléments pour ajouter en tant qu'attribut et valeur d'attribut */
  
-#feedback { font-size: 1.4em; }
+.main-div #feedback { font-size: 1.4em; }
 
-#attribut .ui-selecting { background: #FECA40;  }
+.main-div #attribut .ui-selecting { background: #FECA40;  }
 
-#attribut .ui-selected { background: #F39814; color: white; }
+.main-div #attribut .ui-selected { background: #F39814; color: white; }
 
-#attribut { list-style-type: none; margin-right: 15px; padding: 0; width: 600px; float:left  }
+.main-div #attribut { list-style-type: none; margin-right: 15px; padding: 0; width: 600px; float:left  }
 
-#attribut li { margin: 3px; padding: 0.4em; font-size: 1em; width: 600px; }
-
-
-#valeurs .ui-selecting { background: #FECA40; }
-
-#valeurs .ui-selected { background: #F39814; color: white; }
-
-#valeurs { list-style-type: none; margin: 5px; width: 200px; float:left }
-
-#valeurs li { margin: 3px; padding: 0.4em; font-size: 1em;  width: 500px; }
+.main-div #attribut li { margin: 3px; padding: 0.4em; font-size: 1em; width: 600px; }
 
 
-ul.queryliste { height : 200px;  float: left;  background-color:#b0c4de;}
+.main-div #valeurs .ui-selecting { background: #FECA40; }
 
-#maj_elements_conseil2{ float:bottom;}
+.main-div #valeurs .ui-selected { background: #F39814; color: white; }
+
+.main-div #valeurs { list-style-type: none; margin: 5px; width: 200px; float:left }
+
+.main-div #valeurs li { margin: 3px; padding: 0.4em; font-size: 1em;  width: 500px; }
+
+
+.main-div ul.queryliste { height : 200px;  float: left;  background-color:#b0c4de;}
+
+.main-div #maj_elements_conseil2{ float:bottom;}
