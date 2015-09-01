@@ -5,8 +5,8 @@ padding:20px; background-color:#BBB;
 
 }
 .main-div ul {
-list-style-type: none; margin: 0; padding: 0; 
-margin-bottom: 10px; 
+list-style-type: none; margin: 0; padding: 0;
+margin-bottom: 10px;
 border-radius:6px;
 }
 .main-div li {
@@ -168,3 +168,4 @@ border-radius:6px;
 .main-div ul.queryliste { height : 200px;  float: left;  background-color:#b0c4de;}
 
 .main-div #maj_elements_conseil2{ float:bottom;}
+.ui-widget textarea { width: 100%;}
