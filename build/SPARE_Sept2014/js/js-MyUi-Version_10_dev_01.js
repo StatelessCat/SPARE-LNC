@@ -706,8 +706,10 @@ function synchroCLN($el, text ) {
 	
   // Initialisation de l'ensemble
 var sparelnc = {};
-sparelnc.init = function (container) {
+sparelnc.init = function (container, traceuri, modeluri) {
   var $el = $(container);
+  $el.find("#base_uri").val(traceuri+"@obsels");
+  $el.find("#trace_modele").val(modeluri+"#");
   console.log('---------------------------init----------------------------');
 	  /*
 		A chaque ajout de liste, on doit ajouter une nouvelle liste dans querylist.
